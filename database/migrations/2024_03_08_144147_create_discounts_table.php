@@ -11,17 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('discounts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')->constrained('categories');
             $table->string('name');
+            //description
             $table->text('description')->nullable();
-            $table->string('image')->nullable();
-            $table->integer('price');
-            $table->integer('stock');
-            $table->boolean('status')->default(1);
-            $table->boolean('is_favorite')->default(0);
-          
+            //type
+            $table->enum('type', ['percentage', 'fixed'])->default('percentage');
+            //value
+            $table->decimal('value', 15, 2);
+            //status
+            $table->enum('status', ['active', 'inactive'])->default('active');
+            //expired date
+            $table->date('expired_date')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('discounts');
     }
 };
